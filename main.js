@@ -12,12 +12,10 @@ let index = 0;
 const imgEl = document.getElementById("stack-img");
 const audio = new Audio("assets/button-push.m4a");
 
-// 文本显示功能
 let textLines = [];
 let currentLineIndex = 0;
 let textContainer = document.getElementById("text-container");
 
-// 加载文本文件
 async function loadTextFile() {
   try {
     const response = await fetch("assets/1.txt");
@@ -30,32 +28,29 @@ async function loadTextFile() {
   }
 }
 
-// 显示文本行
 function showTextLine() {
   if (textLines.length === 0) {
     loadTextFile();
     return;
   }
 
-  // 如果已经读取完所有行，重新开始循环
+
   if (currentLineIndex >= textLines.length) {
     currentLineIndex = 0;
   }
 
   const existingLines = textContainer.querySelectorAll(".text-line");
-  
-  // 如果已有两行，移除最旧的一行（第一个）
+
   if (existingLines.length >= 2) {
     existingLines[0].remove();
   }
 
-  // 如果有剩余的一行，将其上移
   const remainingLine = textContainer.querySelector(".text-line");
   if (remainingLine) {
     remainingLine.style.transform = "translateY(-3px)";
   }
 
-  // 创建新行（在底部显示）
+
   const lineElement = document.createElement("div");
   lineElement.className = "text-line";
   lineElement.textContent = textLines[currentLineIndex];
@@ -200,22 +195,35 @@ function toggleAudio(direction) {
   }
 }
 
-// 空心圆点击事件
-document.getElementById("left-circle").addEventListener("click", () => {
-  toggleAudio("left");
-});
+// 空心圆点击事件 - 绑定到整个控制容器，确保手机端也能正常点击
+// 使用防抖机制避免 touchstart 和 click 事件重复触发
+function addCircleControlListeners(controlId, direction) {
+  const control = document.getElementById(controlId);
+  let lastTriggerTime = 0;
+  const DEBOUNCE_TIME = 300; // 300ms 防抖时间
+  
+  // 处理点击/触摸事件
+  function handleInteraction(e) {
+    const now = Date.now();
+    // 防止短时间内重复触发（touchstart 和 click 可能都会触发）
+    if (now - lastTriggerTime < DEBOUNCE_TIME) {
+      return;
+    }
+    lastTriggerTime = now;
+    
+    e.stopPropagation();
+    toggleAudio(direction);
+  }
+  
+  // 同时监听 click 和 touchstart 事件，确保手机端和桌面端都能正常工作
+  control.addEventListener("click", handleInteraction);
+  control.addEventListener("touchstart", handleInteraction, { passive: true });
+}
 
-document.getElementById("right-circle").addEventListener("click", () => {
-  toggleAudio("right");
-});
-
-document.getElementById("top-circle").addEventListener("click", () => {
-  toggleAudio("top");
-});
-
-document.getElementById("bottom-circle").addEventListener("click", () => {
-  toggleAudio("bottom");
-});
+addCircleControlListeners("left-control", "left");
+addCircleControlListeners("right-control", "right");
+addCircleControlListeners("top-control", "top");
+addCircleControlListeners("bottom-control", "bottom");
 
 // 视频播放功能
 const videoContainer = document.getElementById("video-container");

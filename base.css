@@ -1,4 +1,4 @@
-/* 去掉默认 margin */
+
 html, body {
   margin: 0;
   padding: 0;
@@ -6,7 +6,6 @@ html, body {
   height: 100%;
 }
 
-/* === 最底：模糊背景 === */
 body {
   background: black;
 }
@@ -30,7 +29,6 @@ body {
   transform: scale(1);
 }
 
-/* === 红色圆点（在图片下面） === */
 .dots {
   position: absolute;
   top: 48%;
@@ -48,14 +46,6 @@ body {
   border-radius: 50%;
   filter: blur(2px);
 }
-/* .dot1 {
-  width: 6px;
-  height: 6px;
-  background: red;
-  border-radius: 50%;
-} */
-
-/* === 图片叠放层 === */
 .stack {
   position: absolute;
   top: 50%;
@@ -81,7 +71,19 @@ body {
   opacity: 1;
 }
 
-/* === 视频播放层 === */
+@media (max-width: 768px) {
+  .stack img {
+    max-width: 80vw;
+    max-height: 95vh;
+  }
+  
+  .bg-image img {
+    max-width: 80vw;
+    max-height: 95vh;
+  }
+}
+
+
 .video-container {
   position: absolute;
   top: 62%;
@@ -149,13 +151,19 @@ body {
   justify-content: center;
   transform: translate(-50%, -50%);
   z-index: 6;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 17px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .circle-control-vertical {
   flex-direction: column;
 }
 
-/* 空心圆控制按钮位置 */
+
 .circle-control-left {
   left: 20%;
   top: 50%;
@@ -207,7 +215,7 @@ body {
   margin-left: 2px;
 }
 
-/* 上下方向的短竖线 */
+
 .circle-control-vertical .circle-line {
   width: 8px;
   height: 1px;
@@ -221,7 +229,7 @@ body {
   margin-top: 2px;
 }
 
-/* === 文本显示层 === */
+
 .text-container {
   position: absolute;
   top: 75%;
@@ -280,7 +288,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 隐藏滚动条 */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
