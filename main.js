@@ -196,28 +196,50 @@ function toggleAudio(direction) {
 }
 
 // 空心圆点击事件 - 绑定到整个控制容器，确保手机端也能正常点击
-// 使用防抖机制避免 touchstart 和 click 事件重复触发
+// 使用标志位避免 touchstart 和 click 事件重复触发
 function addCircleControlListeners(controlId, direction) {
   const control = document.getElementById(controlId);
-  let lastTriggerTime = 0;
-  const DEBOUNCE_TIME = 300; // 300ms 防抖时间
+  let touchHandled = false;
+  let touchTimeout = null;
   
-  // 处理点击/触摸事件
-  function handleInteraction(e) {
-    const now = Date.now();
-    // 防止短时间内重复触发（touchstart 和 click 可能都会触发）
-    if (now - lastTriggerTime < DEBOUNCE_TIME) {
+  // 处理触摸事件（移动端）
+  function handleTouch(e) {
+    // 立即触发切换，不等待
+    toggleAudio(direction);
+    
+    // 设置标志，防止后续的 click 事件触发
+    touchHandled = true;
+    e.preventDefault(); // 阻止后续的 click 事件
+    e.stopPropagation();
+    
+    // 清除之前的定时器
+    if (touchTimeout) {
+      clearTimeout(touchTimeout);
+    }
+    
+    // 300ms 后重置标志，允许 click 事件（如果 touchstart 未触发）
+    touchTimeout = setTimeout(() => {
+      touchHandled = false;
+    }, 300);
+  }
+  
+  // 处理点击事件（桌面端，或移动端未触发 touchstart 的情况）
+  function handleClick(e) {
+    // 如果已经处理了触摸事件，则忽略点击事件（避免重复触发）
+    if (touchHandled) {
+      e.preventDefault();
+      e.stopPropagation();
       return;
     }
-    lastTriggerTime = now;
     
+    // 桌面端或移动端未触发 touchstart 的情况，正常处理点击
     e.stopPropagation();
     toggleAudio(direction);
   }
   
   // 同时监听 click 和 touchstart 事件，确保手机端和桌面端都能正常工作
-  control.addEventListener("click", handleInteraction);
-  control.addEventListener("touchstart", handleInteraction, { passive: true });
+  control.addEventListener("touchstart", handleTouch, { passive: false });
+  control.addEventListener("click", handleClick);
 }
 
 addCircleControlListeners("left-control", "left");
