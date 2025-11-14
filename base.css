@@ -81,24 +81,30 @@ body {
     max-width: 80vw;
     max-height: 95vh;
   }
+  
+  /* 手机端：缩小 logo */
+  .logo-container {
+    padding: 10px !important;
+  }
+  
+  .logo-container img {
+    width: 40px !important;
+    height: auto !important;
+    max-width: 40px !important;
+  }
 }
 
-
-.video-container {
-  position: absolute;
-  top: 62%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.video-container video {
-  width: 280px;
-  height: auto;
-  object-fit: contain;
+/* 触摸设备（手机/平板）缩小 logo */
+@media (hover: none) and (pointer: coarse) {
+  .logo-container img {
+    width: 40px !important;
+    height: auto !important;
+    max-width: 40px !important;
+  }
+  
+  .logo-container {
+    padding: 10px !important;
+  }
 }
 
 /* === 左右两侧白色矩形 === */
@@ -196,7 +202,8 @@ body {
 }
 
 .circle-btn.active {
-  background: white;
+  background: rgb(219, 219, 219);
+  border: 5px solid rgb(0, 0, 0);
 }
 
 /* 左右方向的短横线 */

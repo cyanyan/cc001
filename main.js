@@ -8,7 +8,8 @@ const imgs = [
   "assets/6.png"
 ];
 
-let index = 0;
+// 随机选择初始图片索引（0-6）
+let index = Math.floor(Math.random() * imgs.length);
 const imgEl = document.getElementById("stack-img");
 const audio = new Audio("assets/button-push.m4a");
 

@@ -26,6 +26,6 @@ left: Passos na calçada / Walk in the sidewalk by CinemaVocal -- https://freeso
 right: Sub frequency noises.wav by mfma_sonic -- https://freesound.org/s/485046/ 
 click: Projector Button Push.wav by GreekIrish -- https://freesound.org/s/254713/
 
-website by：CyanYan
+Website by CyanYan
 
 
