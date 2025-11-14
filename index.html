@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cc001</title>
+  <link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+  <!-- 背景图片层 -->
+  <div class="bg-image">
+    <img src="assets/7.png" alt="background">
+  </div>
+
+  <!-- 红色圆点（在图片下面） -->
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <!-- 图片叠放层 -->
+  <div class="stack">
+    <img id="stack-img" src="assets/1.png" alt="stack">
+  </div>
+
+  <!-- 视频播放层 -->
+  <div class="video-container" id="video-container" style="display: none;">
+    <video id="video-player" src="assets/7.mp4"></video>
+  </div>
+
+  <!-- 左右两侧白色矩形 -->
+  <div class="white-rect left-rect" id="left-rect"></div>
+  <div class="white-rect right-rect" id="right-rect"></div>
+  <!-- 上下两侧白色矩形 -->
+  <div class="white-rect-h top-rect" id="top-rect"></div>
+  <div class="white-rect-h bottom-rect" id="bottom-rect"></div>
+  <!-- 空心圆控制按钮 -->
+  <div class="circle-control circle-control-left" id="left-control">
+    <div class="circle-line circle-line-left"></div>
+    <div class="circle-btn" id="left-circle"></div>
+    <div class="circle-line circle-line-right"></div>
+  </div>
+  <div class="circle-control circle-control-right" id="right-control">
+    <div class="circle-line circle-line-left"></div>
+    <div class="circle-btn" id="right-circle"></div>
+    <div class="circle-line circle-line-right"></div>
+  </div>
+  <div class="circle-control circle-control-vertical circle-control-top" id="top-control">
+    <div class="circle-line circle-line-top"></div>
+    <div class="circle-btn" id="top-circle"></div>
+    <div class="circle-line circle-line-bottom"></div>
+  </div>
+  <div class="circle-control circle-control-vertical circle-control-bottom" id="bottom-control">
+    <div class="circle-line circle-line-top"></div>
+    <div class="circle-btn" id="bottom-circle"></div>
+    <div class="circle-line circle-line-bottom"></div>
+  </div>
+
+  <!-- 文本显示层 -->
+  <div class="text-container" id="text-container"></div>
+
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="assets/logo.svg" alt="logo">
+  </div>
+
+  <!-- Info 文本显示层 -->
+  <div class="info-container" id="info-container" style="display: none;">
+    <div class="info-content" id="info-content"></div>
+  </div>
+
+  <!-- 绿色模糊小矩形（在图片上方 30px） -->
+  <div class="green-mark"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>

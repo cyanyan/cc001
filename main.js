@@ -1,0 +1,267 @@
+const imgs = [
+  "assets/0.png",
+  "assets/1.png",
+  "assets/2.png",
+  "assets/3.png",
+  "assets/4.png",
+  "assets/5.png",
+  "assets/6.png"
+];
+
+let index = 0;
+const imgEl = document.getElementById("stack-img");
+const audio = new Audio("assets/button-push.m4a");
+
+// 文本显示功能
+let textLines = [];
+let currentLineIndex = 0;
+let textContainer = document.getElementById("text-container");
+
+// 加载文本文件
+async function loadTextFile() {
+  try {
+    const response = await fetch("assets/1.txt");
+    const text = await response.text();
+    textLines = text.split("\n").filter(line => line.trim() !== "");
+    currentLineIndex = 0;
+  } catch (error) {
+    console.error("无法加载文本文件:", error);
+    textLines = [];
+  }
+}
+
+// 显示文本行
+function showTextLine() {
+  if (textLines.length === 0) {
+    loadTextFile();
+    return;
+  }
+
+  // 如果已经读取完所有行，重新开始循环
+  if (currentLineIndex >= textLines.length) {
+    currentLineIndex = 0;
+  }
+
+  const existingLines = textContainer.querySelectorAll(".text-line");
+  
+  // 如果已有两行，移除最旧的一行（第一个）
+  if (existingLines.length >= 2) {
+    existingLines[0].remove();
+  }
+
+  // 如果有剩余的一行，将其上移
+  const remainingLine = textContainer.querySelector(".text-line");
+  if (remainingLine) {
+    remainingLine.style.transform = "translateY(-3px)";
+  }
+
+  // 创建新行（在底部显示）
+  const lineElement = document.createElement("div");
+  lineElement.className = "text-line";
+  lineElement.textContent = textLines[currentLineIndex];
+  lineElement.style.transform = "translateY(0px)";
+  
+  // 添加到容器
+  textContainer.appendChild(lineElement);
+  
+  currentLineIndex++;
+}
+
+// 初始化加载文本
+loadTextFile();
+
+showImage(index);
+
+imgEl.addEventListener("click", () => {
+  // 重置音量并播放（短音效使用快速淡入）
+  audio.volume = 0;
+  audio.play();
+  fadeInAudio(audio, 200);
+  index = (index + 1) % imgs.length;
+  showImage(index);
+  showTextLine();
+});
+
+function showImage(i) {
+  imgEl.classList.remove("visible");
+  setTimeout(() => {
+    imgEl.src = imgs[i];
+    imgEl.classList.add("visible");
+  }, 180);
+}
+
+// 音频控制功能
+const leftAudio = new Audio("assets/left.m4a");
+const rightAudio = new Audio("assets/right.m4a");
+const topAudio = new Audio("assets/top.m4a");
+const bottomAudio = new Audio("assets/bottom.mp3");
+
+// 设置音频循环
+leftAudio.loop = true;
+rightAudio.loop = true;
+topAudio.loop = true;
+bottomAudio.loop = true;
+
+// 存储每个音频的淡入淡出定时器
+const audioFadeTimers = {};
+
+// 音频淡入淡出函数
+function fadeInAudio(audio, duration = 500) {
+  // 清除之前的淡入淡出定时器
+  if (audioFadeTimers[audio.src]) {
+    clearInterval(audioFadeTimers[audio.src]);
+  }
+  
+  audio.volume = 0;
+  audio.play().catch(err => console.error("音频播放失败:", err));
+  
+  const interval = 10; // 更新间隔（毫秒）
+  const steps = duration / interval;
+  const volumeStep = 1 / steps;
+  
+  const fadeInterval = setInterval(() => {
+    if (audio.volume < 1) {
+      audio.volume = Math.min(1, audio.volume + volumeStep);
+    } else {
+      clearInterval(fadeInterval);
+      audio.volume = 1;
+      delete audioFadeTimers[audio.src];
+    }
+  }, interval);
+  
+  audioFadeTimers[audio.src] = fadeInterval;
+}
+
+function fadeOutAudio(audio, duration = 500, callback) {
+  // 清除之前的淡入淡出定时器
+  if (audioFadeTimers[audio.src]) {
+    clearInterval(audioFadeTimers[audio.src]);
+  }
+  
+  const interval = 10; // 更新间隔（毫秒）
+  const steps = duration / interval;
+  const volumeStep = 1 / steps;
+  
+  const fadeInterval = setInterval(() => {
+    if (audio.volume > 0) {
+      audio.volume = Math.max(0, audio.volume - volumeStep);
+    } else {
+      clearInterval(fadeInterval);
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 1; // 重置音量以便下次播放
+      delete audioFadeTimers[audio.src];
+      if (callback) callback();
+    }
+  }, interval);
+  
+  audioFadeTimers[audio.src] = fadeInterval;
+}
+
+// 跟踪播放状态
+const audioStates = {
+  left: false,
+  right: false,
+  top: false,
+  bottom: false
+};
+
+// 音频对象映射
+const audioMap = {
+  left: leftAudio,
+  right: rightAudio,
+  top: topAudio,
+  bottom: bottomAudio
+};
+
+// 空心圆元素映射
+const circleMap = {
+  left: document.getElementById("left-circle"),
+  right: document.getElementById("right-circle"),
+  top: document.getElementById("top-circle"),
+  bottom: document.getElementById("bottom-circle")
+};
+
+// 切换音频播放状态
+function toggleAudio(direction) {
+  const audio = audioMap[direction];
+  const circle = circleMap[direction];
+  const isPlaying = audioStates[direction];
+  
+  if (isPlaying) {
+    fadeOutAudio(audio, 500, () => {
+      audioStates[direction] = false;
+      circle.classList.remove("active");
+    });
+  } else {
+    fadeInAudio(audio, 500);
+    audioStates[direction] = true;
+    circle.classList.add("active");
+  }
+}
+
+// 空心圆点击事件
+document.getElementById("left-circle").addEventListener("click", () => {
+  toggleAudio("left");
+});
+
+document.getElementById("right-circle").addEventListener("click", () => {
+  toggleAudio("right");
+});
+
+document.getElementById("top-circle").addEventListener("click", () => {
+  toggleAudio("top");
+});
+
+document.getElementById("bottom-circle").addEventListener("click", () => {
+  toggleAudio("bottom");
+});
+
+// 视频播放功能
+const videoContainer = document.getElementById("video-container");
+const videoPlayer = document.getElementById("video-player");
+
+// 点击视频外部区域或视频结束时隐藏视频
+videoPlayer.addEventListener("ended", () => {
+  videoContainer.style.display = "none";
+});
+
+videoContainer.addEventListener("click", (e) => {
+  if (e.target === videoContainer) {
+    videoPlayer.pause();
+    videoContainer.style.display = "none";
+  }
+});
+
+// Logo 点击显示 info.txt
+const logoContainer = document.querySelector(".logo-container");
+const infoContainer = document.getElementById("info-container");
+const infoContent = document.getElementById("info-content");
+
+async function loadAndShowInfo() {
+  try {
+    const response = await fetch("info.txt");
+    const text = await response.text();
+    infoContent.textContent = text;
+    infoContainer.style.display = "block";
+  } catch (error) {
+    console.error("无法加载 info.txt:", error);
+    infoContent.textContent = "无法加载文件";
+    infoContainer.style.display = "block";
+  }
+}
+
+logoContainer.addEventListener("click", () => {
+  if (infoContainer.style.display === "none") {
+    loadAndShowInfo();
+  } else {
+    infoContainer.style.display = "none";
+  }
+});
+
+// 点击 info 容器外部关闭
+infoContainer.addEventListener("click", (e) => {
+  if (e.target === infoContainer) {
+    infoContainer.style.display = "none";
+  }
+});

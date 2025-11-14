@@ -1,0 +1,301 @@
+/* 去掉默认 margin */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* === 最底：模糊背景 === */
+body {
+  background: black;
+}
+
+.bg-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+}
+
+.bg-image img {
+  max-width: 40vw;
+  max-height: 80vh;
+  object-fit: contain;
+  filter: blur(2px);
+  transform: scale(1);
+}
+
+/* === 红色圆点（在图片下面） === */
+.dots {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 30px;
+  z-index: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: red;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+/* .dot1 {
+  width: 6px;
+  height: 6px;
+  background: red;
+  border-radius: 50%;
+} */
+
+/* === 图片叠放层 === */
+.stack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.stack img {
+  max-width: 40vw;
+  max-height: 80vh;
+  object-fit: contain;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+
+.stack img.visible {
+  opacity: 1;
+}
+
+/* === 视频播放层 === */
+.video-container {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-container video {
+  width: 280px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* === 左右两侧白色矩形 === */
+.white-rect {
+  position: absolute;
+  width: 1px;
+  height: 120px;
+  background: white;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 5;
+  filter: blur(0px);
+}
+
+.left-rect {
+  left: 20%;
+}
+
+.right-rect {
+  right: 20%;
+}
+
+/* === 上下两侧白色矩形 === */
+.white-rect-h {
+  position: absolute;
+  width: 120px;
+  height: 1px;
+  background: white;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 5;
+  filter: blur(0px);
+}
+
+.top-rect {
+  top: 18%;
+}
+
+.bottom-rect {
+  bottom: 18%;
+}
+
+/* === 空心圆控制按钮 === */
+.circle-control {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+}
+
+.circle-control-vertical {
+  flex-direction: column;
+}
+
+/* 空心圆控制按钮位置 */
+.circle-control-left {
+  left: 20%;
+  top: 50%;
+}
+
+.circle-control-right {
+  left: 80%;
+  top: 50%;
+}
+
+.circle-control-top {
+  left: 50%;
+  top: 18%;
+}
+
+.circle-control-bottom {
+  left: 50%;
+  top: 82%; /* 100% - 18% = 82% */
+}
+
+.circle-btn {
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.circle-btn.active {
+  background: white;
+}
+
+/* 左右方向的短横线 */
+.circle-line {
+  width: 1px;
+  height: 8px;
+  background: white;
+  flex-shrink: 0;
+}
+
+.circle-line-left {
+  margin-right: 2px;
+}
+
+.circle-line-right {
+  margin-left: 2px;
+}
+
+/* 上下方向的短竖线 */
+.circle-control-vertical .circle-line {
+  width: 8px;
+  height: 1px;
+}
+
+.circle-line-top {
+  margin-bottom: 2px;
+}
+
+.circle-line-bottom {
+  margin-top: 2px;
+}
+
+/* === 文本显示层 === */
+.text-container {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.text-line {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10px;
+  line-height: 14px;
+  color: white;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+/* === Logo === */
+.logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 8%;
+  z-index: 4;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.logo-container img {
+  width: 60px;
+  height: auto;
+  display: block;
+}
+
+/* === Info 文本显示层 === */
+.info-container {
+  position: fixed;
+  top: 25%;
+  right: 25%;
+  bottom: 22%;
+  left: 25%;
+  z-index: 20;
+  background: black;
+  padding: 10px;
+  overflow: auto;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 隐藏滚动条 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.info-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.info-content {
+  font-size: 11px;
+  color: white;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+  display: inline-block;
+  max-width: 100%;
+}

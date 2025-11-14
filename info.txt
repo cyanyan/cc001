@@ -1,0 +1,31 @@
+Cc 001--关于电影院和洞穴。
+
+网站包含 7 张图像
+4 段音轨和 2 段文本.
+点击图像可以切换下一幕，
+上下左右的圆点分别控制 4 段音轨，
+它们可以同时或单独播放。
+
+Credits
+Pic:
+00: Uncle Boonmee Who Can Recall His Past Lives,Apichatpong Weerasethakul (2010)
+01: Mickey Mouse in The Sorcerer's Apprentice in Fantasia (1940)
+02: The Treatment，Allemagne，by Alexander KRACK (2016)
+03: Dolor y gloria, Pedro Almodóvar (2019）
+04: Borom Sarret, Ousmane Sembène (1963)
+05: n/n
+06: 24 Frames, Abbas Kiarostami (2017)
+
+Text(mixed):
+滨口龙介，hyentse
+
+Audio:
+top: Super 8 mm settingup-projector by Eelke -- https://freesound.org/s/256653/
+bottom: Ambience - Musical Bells Glitch.wav by GregorQuendel -- https://freesound.org/s/516495/
+left: Passos na calçada / Walk in the sidewalk by CinemaVocal -- https://freesound.org/s/331649/
+right: Sub frequency noises.wav by mfma_sonic -- https://freesound.org/s/485046/ 
+click: Projector Button Push.wav by GreekIrish -- https://freesound.org/s/254713/
+
+website by：Guanjun
+
+
