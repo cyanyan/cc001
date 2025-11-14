@@ -1,4 +1,4 @@
-Cc 001--关于电影院和洞穴。
+Cc 001
 
 网站包含 7 张图像
 4 段音轨和 2 段文本.
@@ -26,6 +26,6 @@ left: Passos na calçada / Walk in the sidewalk by CinemaVocal -- https://freeso
 right: Sub frequency noises.wav by mfma_sonic -- https://freesound.org/s/485046/ 
 click: Projector Button Push.wav by GreekIrish -- https://freesound.org/s/254713/
 
-website by：Guanjun
+website by：CyanYan
 
 
