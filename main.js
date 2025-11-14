@@ -133,15 +133,26 @@ function fadeOutAudio(audio, duration = 500, callback) {
     clearInterval(audioFadeTimers[audio.src]);
   }
   
+  // 如果音频已经暂停，直接执行回调
+  if (audio.paused) {
+    audio.currentTime = 0;
+    audio.volume = 1; // 重置音量以便下次播放
+    if (callback) callback();
+    return;
+  }
+  
   const interval = 10; // 更新间隔（毫秒）
   const steps = duration / interval;
   const volumeStep = 1 / steps;
+  let currentVolume = audio.volume; // 从当前音量开始淡出
   
   const fadeInterval = setInterval(() => {
-    if (audio.volume > 0) {
-      audio.volume = Math.max(0, audio.volume - volumeStep);
+    if (currentVolume > 0) {
+      currentVolume = Math.max(0, currentVolume - volumeStep);
+      audio.volume = currentVolume;
     } else {
       clearInterval(fadeInterval);
+      // 立即停止音频（iOS 上需要立即停止）
       audio.pause();
       audio.currentTime = 0;
       audio.volume = 1; // 重置音量以便下次播放
@@ -181,14 +192,28 @@ const circleMap = {
 function toggleAudio(direction) {
   const audio = audioMap[direction];
   const circle = circleMap[direction];
-  const isPlaying = audioStates[direction];
+  
+  // 检查音频的实际播放状态，而不仅仅依赖 audioStates
+  // 在 iOS 上，音频状态可能和 audioStates 不同步
+  const isActuallyPlaying = !audio.paused && audio.currentTime > 0 && !audio.ended;
+  const isPlaying = audioStates[direction] || isActuallyPlaying;
   
   if (isPlaying) {
+    // 立即更新状态，避免重复点击
+    audioStates[direction] = false;
+    circle.classList.remove("active");
+    
+    // 停止音频（iOS 上需要立即停止）
     fadeOutAudio(audio, 500, () => {
+      // 确保音频完全停止
+      audio.pause();
+      audio.currentTime = 0;
       audioStates[direction] = false;
       circle.classList.remove("active");
     });
   } else {
+    // 确保音频从开始播放
+    audio.currentTime = 0;
     fadeInAudio(audio, 500);
     audioStates[direction] = true;
     circle.classList.add("active");
